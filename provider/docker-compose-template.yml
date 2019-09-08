@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  #{ADB_NAME}:
+    image: sorccu/adb:latest
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - /root/.android:/root/.android
+  #{PROVIDER_NAME}:
+    environment:
+      - PUBLIC_IP
+    image: openstf/stf:latest
+    restart: unless-stopped
+    command: stf provider --name #{PROVIDER_NAME} --connect-sub tcp://app:7250 --connect-push tcp://app:7270 --storage-url http://${PUBLIC_IP}/ --public-ip ${PUBLIC_IP} --heartbeat-interval 10000 --screen-ws-url-pattern "ws://${PUBLIC_IP}/d/#{PROVIDER_NAME}/<%= serial %>/<%= publicPort %>/" --adb-host #{ADB_NAME} --min-port 7400 --max-port 7700
+    depends_on:
+      - #{ADB_NAME}
+
+networks:
+  default:
+    external:
+      name: stf_nius
