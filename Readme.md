@@ -1,12 +1,7 @@
-PoC for STF deployment on a single machine
+STF deployment on a single machine with multiple adb instances
 ===========
-# Installation
 
-* install docker
-* install docker-compose
-* clone this repo
-
-# Usage
+# Usage (by nius)
 Stf is designed to distributed deployed but its modules is too much for a common use case.
 
 There are four services in main docker-compose after we merge most modules:
@@ -22,15 +17,17 @@ To start main service in one machine:
 `docker-compose up -d --build`
 
 Then start provider:
-`cd provider`
-`start-provider.sh`
+```shell
+cd provider
+start-provider.sh
+```
 
 You can execute `start-provider.sh` multiple times to start multiple provider/adb instances. And then use `stop-provider.sh` to shutdown instances one by one accordingly. This is mainly prepared for using one adb for exactly one phone to separate adb instaces in case `abd kill-server` making all devices test-case stop
 
 
 
 
-# Original Usage
+# Original Usage (by nikosch86)
 choose an IP your deployment should use, usually that will be the IP of your host.  
 choose a secret to be used for inter-service authentication.  
 Update the `.env` file accordingly
